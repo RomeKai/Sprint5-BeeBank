@@ -91,12 +91,12 @@ class ClienteClassic(Client):
 
 
 class ClienteGold(Client):
-    def __init__(self, nombre, dni, numeroCliente):
-        super().__init__(nombre, dni, "Gold", numeroCliente)
-        self.tarjetasDisponibles = [TarjetaDebito(numeroCliente, 20000)]  # Se crea una tarjeta de débito con un límite inicial de 20000
-        self.cajasAhorroPesos = [CuentaAhorroPeso(numeroCliente, 0) for _ in range(2)]  # Hasta 2 cajas de ahorro en pesos sin cargo adicional
-        self.cuentaCorriente = CuentaCorrientePeso(numeroCliente, 0)  # Una cuenta corriente sin cargo adicional
-        self.cajasAhorroDolares = CuentaAhorroDolar(numeroCliente, 0)  # Saldo inicial en dólares
+    def __init__(self, name,surname,numberclient,dni):
+        super().__init__(name,surname,"Gold",numberclient,dni)
+        self.tarjetasDisponibles = [TarjetaDebito(numberclient, 20000)]  # Se crea una tarjeta de débito con un límite inicial de 20000
+        self.cajasAhorroPesos = [CuentaAhorroPeso(numberclient, 0) for _ in range(2)]  # Hasta 2 cajas de ahorro en pesos sin cargo adicional
+        self.cuentaCorriente = CuentaCorrientePeso(numberclient, 0)  # Una cuenta corriente sin cargo adicional
+        self.cajasAhorroDolares = CuentaAhorroDolar(numberclient, 0)  # Saldo inicial en dólares
         self.cargoMensualCajaDolares = 10  # Cargo mensual por caja de ahorro en dólares adicionales
         self.tarjetasCredito = {"VISA": TarjetaCredito("VISA", 150000, 100000),
                                 "Mastercard": TarjetaCredito("Mastercard", 150000, 100000)}  # Tarjetas VISA y Mastercard con límites
@@ -168,11 +168,11 @@ class ClienteGold(Client):
     
 
 class ClienteBlack(Client):
-    def __init__(self, nombre, dni, numeroCliente):
-        super().__init__(nombre, dni, "Black", numeroCliente)
-        self.nombre = nombre
+    def __init__(self, name,surname,numberclient,dni):
+        super().__init__(name,surname,"Black",numberclient,dni)
+        self.nombre = name
         self.dni = dni
-        self.numeroCliente = numeroCliente
+        self.numberclient = numberclient
         self.tarjetasDebito = []  # Lista para almacenar tarjetas de débito
         self.cajasAhorroPesos = 0  # Contador para cajas de ahorro en pesos
         self.cajasAhorroDolares = 0  # Contador para cajas de ahorro en dólares

@@ -127,7 +127,6 @@ while True:
                         print("Error, coloque solo numeros en la seleccion!!")
 
                 while True:
-
                     if opcion == "1":
                         #realizar_retiro_efectivo(cliente)
                         pass
