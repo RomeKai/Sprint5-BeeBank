@@ -103,30 +103,35 @@ while True:
             if foundClient != None:
                 print(f"BIENVENIDO : {foundClient.name} {foundClient.surname}")
                 #chequeo de la seleccion
-                while True:
-                    print("Seleccione una opcion:")
-                    print("1. Retiro de Efectivo por Cajero Automático")
-                    print("2. Retiro de Efectivo por Caja")
-                    print("3. Compra en Cuotas con Tarjeta de Crédito")
-                    print("4. Alta Tarjeta de Crédito")
-                    print("5. Alta Tarjeta de Débito")
-                    print("6. Alta Chequera")
-                    print("7. Alta Cuenta Corriente")
-                    print("8. Alta Caja de Ahorro")
-                    print("9. Alta Cuenta de Inversión")
-                    print("10. Compra Dólares")
-                    print("11. Venta Dólares")
-                    print("12. Transferencia Enviada")
-                    print("13. Transferencia Recibida")
-                    print("0. Volver")
-                    opcion = input()
-                    try:
-                        opcion = int(opcion)
-                        break
-                    except:
-                        print("Error, coloque solo numeros en la seleccion!!")
 
-                while True:
+                while True:#entra en la seleccion
+                    while True:#verifica la entrada del usuario
+                        print("Seleccione una opcion:")
+                        print("1. Retiro de Efectivo por Cajero Automático")
+                        print("2. Retiro de Efectivo por Caja")
+                        print("3. Compra en Cuotas con Tarjeta de Crédito")
+                        print("4. Alta Tarjeta de Crédito")
+                        print("5. Alta Tarjeta de Débito")
+                        print("6. Alta Chequera")
+                        print("7. Alta Cuenta Corriente")
+                        print("8. Alta Caja de Ahorro")
+                        print("9. Alta Cuenta de Inversión")
+                        print("10. Compra Dólares")
+                        print("11. Venta Dólares")
+                        print("12. Transferencia Enviada")
+                        print("13. Transferencia Recibida")
+                        print("0. Volver")
+                        opcion = input()
+                        try:
+                            opcion = int(opcion)
+                            if opcion<0 and opcion>13:
+                                raise ValueError
+                            opcion = str(opcion)
+                            break
+                        except ValueError:
+                            print("Error, coloque solo numeros en la seleccion!!")
+                            input("Presione ENTER para continuar...")
+
                     if opcion == "1":
                         #realizar_retiro_efectivo(cliente)
                         pass
@@ -178,7 +183,7 @@ while True:
             elemento = crearCliente()
             lista_clientes.append(elemento)
         elif selection == 3:
-            print("Gracias pro usar nuestro programa!!")
+            print("Gracias por usar nuestro programa!!")
             break
         else: 
             os.system('cls')

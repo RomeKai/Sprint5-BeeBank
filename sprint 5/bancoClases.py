@@ -14,6 +14,28 @@ class Client:
 
     def __str__(self):
         print("Nombre:{}\nApellido:{},Tipo:{},Numero de cliente:{},DNI:{}".format(self.name,self.surname,self.typeclient,self.numberclient,self.dni))
+    
+    def realizarRetiroEfectivo(self, cuenta, monto):
+        if cuenta == "Caja de ahorro en pesos":
+            if monto <= 10000:  # Se verifica el límite diario de retiro
+                if self.cajaAhorroPesos.obtenerSaldo() >= monto:
+                    self.cajaAhorroPesos.saldo -= monto
+                    print("Retiro de efectivo exitoso.")
+                else:
+                    print("Fondos insuficientes en la cuenta seleccionada.")
+            else:
+                print("El monto excede el límite diario de retiro.")
+        elif cuenta == "Caja de ahorro en dólares":
+            if monto <= 10000:  # Se verifica el límite diario de retiro
+                if self.cajaAhorroDolares.obtenerSaldo() >= monto:
+                    self.cajaAhorroDolares.saldo -= monto
+                    print("Retiro de dólares exitoso.")
+                else:
+                    print("Fondos insuficientes en la cuenta seleccionada.")
+            else:
+                print("El monto excede el límite diario de retiro en dólares.")
+        else:
+            print("Cuenta no válida.")
     """
     @abstractmethod
     def obtener_tarjetas_disponibles(self):
@@ -52,28 +74,6 @@ class ClienteClassic(Client):
             cuentas.append("Caja de ahorro en dólares")
         return cuentas
 
-    def realizarRetiroEfectivo(self, cuenta, monto):
-        if cuenta == "Caja de ahorro en pesos":
-            if monto <= 10000:  # Se verifica el límite diario de retiro
-                if self.cajaAhorroPesos.obtenerSaldo() >= monto:
-                    self.cajaAhorroPesos.saldo -= monto
-                    print("Retiro de efectivo exitoso.")
-                else:
-                    print("Fondos insuficientes en la cuenta seleccionada.")
-            else:
-                print("El monto excede el límite diario de retiro.")
-        elif cuenta == "Caja de ahorro en dólares":
-            if monto <= 10000:  # Se verifica el límite diario de retiro
-                if self.cajaAhorroDolares.obtenerSaldo() >= monto:
-                    self.cajaAhorroDolares.saldo -= monto
-                    print("Retiro de dólares exitoso.")
-                else:
-                    print("Fondos insuficientes en la cuenta seleccionada.")
-            else:
-                print("El monto excede el límite diario de retiro en dólares.")
-        else:
-            print("Cuenta no válida.")
-
     def realizarTransferenciaSaliente(self, monto):
         comision = monto * 0.01  # Comisión del 1% por transferencias salientes
         totalTransferencia = monto + comision
@@ -93,13 +93,13 @@ class ClienteClassic(Client):
 class ClienteGold(Client):
     def __init__(self, name,surname,numberclient,dni):
         super().__init__(name,surname,"Gold",numberclient,dni)
-        self.tarjetasDisponibles = [TarjetaDebito(numberclient, 20000)]  # Se crea una tarjeta de débito con un límite inicial de 20000
+        self.tarjetasDisponibles = [TarjetaDebito(numberclient, 20000 ,"debito")]  # Se crea una tarjeta de débito con un límite inicial de 20000
         self.cajasAhorroPesos = [CuentaAhorroPeso(numberclient, 0) for _ in range(2)]  # Hasta 2 cajas de ahorro en pesos sin cargo adicional
         self.cuentaCorriente = CuentaCorrientePeso(numberclient, 0)  # Una cuenta corriente sin cargo adicional
         self.cajasAhorroDolares = CuentaAhorroDolar(numberclient, 0)  # Saldo inicial en dólares
         self.cargoMensualCajaDolares = 10  # Cargo mensual por caja de ahorro en dólares adicionales
-        self.tarjetasCredito = {"VISA": TarjetaCredito("VISA", 150000, 100000),
-                                "Mastercard": TarjetaCredito("Mastercard", 150000, 100000)}  # Tarjetas VISA y Mastercard con límites
+        self.tarjetasCredito = {"VISA": TarjetaCredito("VISA", 500000, 600000 ,"credito"),
+                                "Mastercard": TarjetaCredito("Mastercard", 500000, 600000 ,"credito")}  # Tarjetas VISA y Mastercard con límites
         self.accesoCuentasInversion = True  # Acceso a cuentas de inversión
         self.chequera = True  # Posibilidad de tener una chequera
 
@@ -114,23 +114,6 @@ class ClienteGold(Client):
         if self.cajasAhorroDolares.obtenerSaldo() > 0:
             cuentas.append("Caja de ahorro en dólares")
         return cuentas
-
-    def realizarRetiroEfectivo(self, cuenta, monto):
-        if cuenta == "Caja de ahorro en pesos":
-            for caja in self.cajasAhorroPesos:
-                if monto <= 10000 and caja.obtenerSaldo() >= monto:
-                    caja.saldo -= monto
-                    print("Retiro de efectivo exitoso.")
-                    return
-            print("Fondos insuficientes en la cuenta seleccionada o se excede el límite diario de retiro.")
-        elif cuenta == "Caja de ahorro en dólares" and monto <= 10000 and self.cajasAhorroDolares.obtenerSaldo() >= monto:
-            self.cajasAhorroDolares.saldo -= monto
-            print("Retiro de dólares exitoso.")
-        elif cuenta == "Cuenta corriente" and monto <= 10000 and self.cuentaCorriente.obtenerSaldo() >= monto:
-            self.cuentaCorriente.saldo -= monto
-            print("Retiro de cuenta corriente exitoso.")
-        else:
-            print("Fondos insuficientes en la cuenta seleccionada o se excede el límite diario de retiro.")
 
     def realizarTransferenciaSaliente(self, monto):
         comision = monto * 0.005  # Comisión del 0.5% por transferencias salientes
@@ -173,11 +156,12 @@ class ClienteBlack(Client):
         self.nombre = name
         self.dni = dni
         self.numberclient = numberclient
-        self.tarjetasDebito = []  # Lista para almacenar tarjetas de débito
+        self.tarjetasDisponibles = [TarjetaDebito(numberclient, 20000 ,"debito")]  # Se crea una tarjeta de débito con un límite inicial de 20000
         self.cajasAhorroPesos = 0  # Contador para cajas de ahorro en pesos
         self.cajasAhorroDolares = 0  # Contador para cajas de ahorro en dólares
         self.cuentasCorrientes = 0  # Contador para cuentas corrientes
-        self.tarjetasCredito = []  # Lista para almacenar tarjetas de crédito
+        self.tarjetasCredito = {"VISA": TarjetaCredito("VISA", 500000, 600000 ,"credito"),
+                                "Mastercard": TarjetaCredito("Mastercard", 500000, 600000 ,"credito")}  # Tarjetas VISA y Mastercard con límites
         self.limiteRetiroDiario = 100000  # Límite de retiro diario sin comisiones
         self.transaccionesMensuales = 0  # Contador de transacciones realizadas en el mes
 
@@ -258,18 +242,18 @@ class ClienteBlack(Client):
             return False
 
 
-#----------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------
 
-
-class Cuenta(ABC):
+#Clase cuenta//////////////////////////////////////////////////////////
+class Cuenta():
     def __init__(self, numero_cuenta, saldo):
         self.numeroCuenta = numero_cuenta
         self.saldo = saldo
 
-    @abstractmethod
     def obtenerSaldo(self):
         pass
 
+#Clase cuenta de ahorro en pesos///////////////////////////////////////
 class CuentaAhorroPeso(Cuenta):
     def __init__(self, numero_cuenta, saldo):
         super().__init__(numero_cuenta, saldo)
@@ -278,6 +262,7 @@ class CuentaAhorroPeso(Cuenta):
     def obtenerSaldo(self):
         return self.saldo
 
+#Clase cuenta de ahorro en dolar///////////////////////////////////////
 class CuentaAhorroDolar(Cuenta):
     def __init__(self, numero_cuenta, saldo):
         super().__init__(numero_cuenta, saldo)
@@ -286,6 +271,7 @@ class CuentaAhorroDolar(Cuenta):
     def obtenerSaldo(self):
         return self.saldo
 
+#Clase cuenta corriente en pesos///////////////////////////////////////
 class CuentaCorrientePeso(Cuenta):
     def __init__(self, numero_cuenta, saldo):
         super().__init__(numero_cuenta, saldo)
@@ -294,6 +280,7 @@ class CuentaCorrientePeso(Cuenta):
     def obtenerSaldo(self):
         return self.saldo
 
+#Clase cuenta corriente en dolar///////////////////////////////////////
 class CuentaCorrienteDolar(Cuenta):
     def __init__(self, numero_cuenta, saldo):
         super().__init__(numero_cuenta, saldo)
@@ -302,6 +289,7 @@ class CuentaCorrienteDolar(Cuenta):
     def obtenerSaldo(self):
         return self.saldo
 
+#Clase cuenta de inversion/////////////////////////////////////////////
 class CuentaInversion(Cuenta):
     def __init__(self, numero_cuenta, saldo):
         super().__init__(numero_cuenta, saldo)
@@ -313,26 +301,38 @@ class CuentaInversion(Cuenta):
 
 
 
-
-class Tarjeta(ABC):
-    def __init__(self, numero_tarjeta, limite):
+#clase Tarjeta//////////////////////////////////////////////////////////
+class Tarjeta():
+    def __init__(self, numero_tarjeta, limiteTotal ,limiteCuota):
         self.numeroTarjeta = numero_tarjeta
-        self.limite = limite
+        self.limiteTotal = limiteTotal
+        self.limitecuota = limiteCuota
 
-    @abstractmethod
-    def obtenerLimite(self):
-        pass
+    def obtenerLimiteTotal(self):
+        return self.limiteTotal
+    def obtenerLimiteCuota(self):
+        return self.limiteCuota
 
+#clase Tarjeta de debito////////////////////////////////////////////////
 class TarjetaDebito(Tarjeta):
-    def __init__(self, numero_tarjeta, limite):
-        super().__init__(numero_tarjeta, limite)
+    def __init__(self, numero_tarjeta, limiteTotal, tipo):
+        super().__init__(numero_tarjeta, limiteTotal, "No aplica")
+        self.tipo = tipo
 
-    def obtenerLimite(self):
-        return self.limite
+    def __str__(self):
+        return ("Tarjeta de {}, limite en un pago ${}".format(self.tipo,self.limiteTotal))
 
+    def getTipo(self):
+        return self.tipo
+
+#clase tarjeta de credito///////////////////////////////////////////////
 class TarjetaCredito(Tarjeta):
-    def __init__(self, numero_tarjeta, limite):
-        super().__init__(numero_tarjeta, limite)
+    def __init__(self, numero_tarjeta, limiteTotal ,limiteCuota ,tipo):
+        super().__init__(numero_tarjeta, limiteTotal ,limiteCuota)
+        self.tipo = tipo
 
-    def obtenerLimite(self):
-        return self.limite
+    def __str__(self):
+        return ("Tarjeta de {}, limite en un pago ${}, limite total por pago en cuotas ${}".format(self.tipo,self.limiteTotal,self.limiteCuota))
+    
+    def getTipo(self):
+        return self.tipo
