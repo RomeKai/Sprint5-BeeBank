@@ -3,15 +3,18 @@ from abc import ABC, abstractmethod
 #Clases base abstractas no instanciables Cliente,Cuenta y tarjeta
 
 
-class Client(ABC):
-    def __init__(self, name, surname, typeclient, number, dni):
+class Client:
+    def __init__(self, name, surname, typeclient, numberclient, dni):
         self.name = name
         self.surname = surname
         self.typeclient = typeclient
-        self.number = number
+        self.numberclient = numberclient
         self.dni = dni
         self.transacciones = []  # Lista de movimientos
-    
+
+    def __str__(self):
+        print("Nombre:{}\nApellido:{},Tipo:{},Numero de cliente:{},DNI:{}".format(self.name,self.surname,self.typeclient,self.numberclient,self.dni))
+    """
     @abstractmethod
     def obtener_tarjetas_disponibles(self):
         pass
@@ -27,16 +30,19 @@ class Client(ABC):
     @abstractmethod
     def obtener_limite_retiro_diario(self, cuenta):
         pass
+    """
 
-
-class ClienteClassic(client):
-    def __init__(self, nombre, dni, numeroCliente):
-        super().__init__(nombre, dni, "Classic", numeroCliente)
-        self.tarjetasDisponibles = [TarjetaDebito(numeroCliente, 10000)]  # Se crea una tarjeta de débito con un límite inicial de 10000
-        self.cajaAhorroPesos = CuentaAhorroPeso(numeroCliente, 0)  # Saldo inicial en pesos
-        self.cajaAhorroDolares = CuentaAhorroDolar(numeroCliente, 0)  # Saldo inicial en dólares
+class ClienteClassic(Client):
+    def __init__(self, name,surname,numberclient,dni):
+        super().__init__(name,surname,"Classic",numberclient,dni)
+        self.tarjetasDisponibles = [TarjetaDebito(numberclient, 10000)]  # Se crea una tarjeta de débito con un límite inicial de 10000
+        self.cajaAhorroPesos = CuentaAhorroPeso(numberclient, 0)  # Saldo inicial en pesos
+        self.cajaAhorroDolares = CuentaAhorroDolar(numberclient, 0)  # Saldo inicial en dólares
         self.cargoMensualCajaDolares = 10  # Cargo mensual por caja de ahorro en dólares
 
+    def __str__(self):
+        return ("Nombre:{}\nApellido:{}\nTipo:{}\nNumero de cliente:{}\nDNI:{}".format(self.name,self.surname,self.typeclient,self.numberclient,self.dni))
+    
     def obtenerTarjetasDisponibles(self):
         return [tarjeta.numeroTarjeta for tarjeta in self.tarjetasDisponibles]
 
@@ -84,18 +90,21 @@ class ClienteClassic(client):
         print("Transferencia entrante exitosa.")
 
 
-class ClienteGold(client):
+class ClienteGold(Client):
     def __init__(self, nombre, dni, numeroCliente):
         super().__init__(nombre, dni, "Gold", numeroCliente)
         self.tarjetasDisponibles = [TarjetaDebito(numeroCliente, 20000)]  # Se crea una tarjeta de débito con un límite inicial de 20000
         self.cajasAhorroPesos = [CuentaAhorroPeso(numeroCliente, 0) for _ in range(2)]  # Hasta 2 cajas de ahorro en pesos sin cargo adicional
-        self.cuentaCorriente = CuentaCorriente(numeroCliente, 0)  # Una cuenta corriente sin cargo adicional
+        self.cuentaCorriente = CuentaCorrientePeso(numeroCliente, 0)  # Una cuenta corriente sin cargo adicional
         self.cajasAhorroDolares = CuentaAhorroDolar(numeroCliente, 0)  # Saldo inicial en dólares
         self.cargoMensualCajaDolares = 10  # Cargo mensual por caja de ahorro en dólares adicionales
         self.tarjetasCredito = {"VISA": TarjetaCredito("VISA", 150000, 100000),
                                 "Mastercard": TarjetaCredito("Mastercard", 150000, 100000)}  # Tarjetas VISA y Mastercard con límites
         self.accesoCuentasInversion = True  # Acceso a cuentas de inversión
         self.chequera = True  # Posibilidad de tener una chequera
+
+    def __str__(self):
+        return ("Nombre:{}\nApellido:{}\nTipo:{}\nNumero de cliente:{}\nDNI:{}".format(self.name,self.surname,self.typeclient,self.numberclient,self.dni))
 
     def obtenerTarjetasDisponibles(self):
         return [tarjeta.numeroTarjeta for tarjeta in self.tarjetasDisponibles]
@@ -158,7 +167,7 @@ class ClienteGold(client):
 
     
 
-class ClienteBlack(client):
+class ClienteBlack(Client):
     def __init__(self, nombre, dni, numeroCliente):
         super().__init__(nombre, dni, "Black", numeroCliente)
         self.nombre = nombre
@@ -171,6 +180,9 @@ class ClienteBlack(client):
         self.tarjetasCredito = []  # Lista para almacenar tarjetas de crédito
         self.limiteRetiroDiario = 100000  # Límite de retiro diario sin comisiones
         self.transaccionesMensuales = 0  # Contador de transacciones realizadas en el mes
+
+    def __str__(self):
+        return ("Nombre:{}\nApellido:{}\nTipo:{}\nNumero de cliente:{}\nDNI:{}".format(self.name,self.surname,self.typeclient,self.numberclient,self.dni))
 
     def obtenerTarjetasDisponibles(self):
         return len(self.tarjetasDebito) + len(self.tarjetasCredito)
