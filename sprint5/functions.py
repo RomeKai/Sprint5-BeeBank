@@ -1,9 +1,9 @@
 import os
-from scriptDB import reconstruirCliente
-from scriptDB import buscarDniCliente
+from scriptRecClase import reconstruirCliente
+from scriptSearchDNI import buscarDniCliente
 from clientClass import ClienteClassic
-from clientClass import ClienteGold
 from clientClass import ClienteBlack
+from clientClass import ClienteGold
 
 #validacion de la seleccion realizada por el cliente
 def validacionSeleccion(texto,overflow):
@@ -48,7 +48,7 @@ def validacionInformacionCliente(texto):
 #validacion del numero ingresado por el cliente
 def enterPositiveNumber(texto):
     while True:
-        entrada = input(texto)
+        entrada = input(texto+": ")
         try:
             entrada = int(entrada)
             if entrada>0:
@@ -86,6 +86,17 @@ def menuCrearCliente():
         print("Cliente con DNI ya existente...")
     input("Presiona ENTER para continuar...")
 
+def menuUsarCliente():
+    dni = enterPositiveNumber("ingrese su DNI")
+    statePointer1 = buscarDniCliente(dni)
+    stateIndex = 0
+    if statePointer1[stateIndex]==True:
+        reconstruirCliente(dni)
+    else:
+        print("No existen cuentas con ese DNI...")
+        input("Presione ENTER para continuar...")
+    os.system("cls")
+
 def menu():
     os.system("cls")
     #no magic numbers
@@ -103,8 +114,7 @@ def menu():
         seleccion = validacionSeleccion("--Bienvenido/a al sistema bancario BeeBank--\nIngrese la opcion deseada\n1.Ya tengo una cuenta \n2.Crear cuenta nueva\n3.Salir\nSu seleccion: ",3)
         if seleccion == opcion1:
             os.system("cls")
-            dni = enterPositiveNumber("ingrese su DNI")
-            os.system("cls")
+            menuUsarCliente()
         elif seleccion == opcion2:
             os.system("cls")
             menuCrearCliente()
@@ -114,5 +124,5 @@ def menu():
             break
         else:
             print("ERROR")
-    input("Presion ENTER para finalizar...")
+    input("Presione ENTER para finalizar...")
     os.system("cls")

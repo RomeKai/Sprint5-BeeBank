@@ -1,5 +1,5 @@
-from scriptDB import agregarCliente
-from scriptDB import generarNumeroCliente
+from scriptAgregarCliente import agregarCliente
+from scriptNumberclient import generarNumeroCliente
 
 class Client:
     def __init__(self,name,surname,typeclient,dni,transacciones,clientNumber,tCredito,tDebito,cAhorroPesos,cAhorroDolares,cuentaCorriente,cantTCredito,cantTDebito,cantCAhorro,cantCCorriente,cantCInversion,cantChequera,cantLimiteDiario,state):
