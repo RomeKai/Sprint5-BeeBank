@@ -1,6 +1,5 @@
 from bancoClases import *
 import os
-from time import sleep
 
 #LOGICA DEL MAIN, Entrar al sistema, preguntar si ya tiene cuenta y que tipo de cliente es, buscar su existencia y desplegar menu de opc disponibles, chequear si la opc seleccionada aplica el cliente en cuestion
 #Si no tiene cuenta se crea una dependiendo del tipo de cliente y lo anade a la lista
@@ -27,16 +26,27 @@ def validacionTexto(texto):
             print("Error,",texto,"nuevamente!!")
     return entrada
 
-def validacionTexto2():
+def validacionTexto2(texto):
     while True:
-        entrada = input("Ingrese la opcion deseada\n1.Ya tengo una cuenta \n2.Crear cuenta nueva\n3.Salir\nSu seleccion: ")
+        entrada = input(texto)
         try:
             entrada = int(entrada)
             break
         except ValueError:
             print("Ingrese una opcion correcta!!")
             input("Presione ENTER para continuar...")
-    return entrada
+    return str(entrada)
+
+def validacionNumero(texto):
+    while True:
+        numero = input(texto)
+        try:
+            numero = int(numero)
+            break
+        except ValueError:
+            print("Ingrese un numero valido!!")
+            input("Presione ENTER para continuar...")
+    return numero
 
 def crearCliente():
     name = validacionTexto("Ingrese el nombre del cliente")
@@ -64,9 +74,7 @@ def buscar_cliente(dniExistente, lista_clientes):
             return client
     return None  
 
-
-
-    #estas 3 son obligatorias por el enunciado
+#estas 3 son obligatorias por el enunciado
 
 def calcularMontoTotal(precioDolar, cantidadDolares):
     impuestoPais = 0.3  # 30% de impuesto país
@@ -88,39 +96,49 @@ def calcularMontoPlazoFijo(monto, interes):
     montoFinal = monto * (1 + interes)
     return montoFinal
 
-
-
 #**********************************************************
 #main principal, falta la salida en formato CVG y tambien las opciones de las funciones de calcularMontoTotal,descontarComision,calcularMontoPlazoFijo
 lista_clientes = []
+
+#anti magic numbers
+opcion1 = "0"
+opcion2 = "1"
+opcion3 = "2"
+opcion4 = "3"
+opcion5 = "4"
+opcion6 = "5"
+opcion7 = "6"
+opcion8 = "7"
+opcion9 = "8"
+opcion10 = "9"
+opcion11 = "10"
+opcion12 = "11"
+opcion13 = "12"
+opcion14 = "13"
+opcion15 = "14"
 while True:
     if __name__ == "__main__":
         print("\n --Bienvenido al sistema bancario BeeBank-- \n")
-        selection = validacionTexto2()
-        if selection == 1: 
+        selection = validacionTexto2("Ingrese la opcion deseada\n1.Ya tengo una cuenta \n2.Crear cuenta nueva\n3.Salir\nSu seleccion: ")
+        if selection == opcion2: 
             dniExistente = input("Ingrese el número de DNI: ")
             foundClient = buscar_cliente(dniExistente, lista_clientes)
             if foundClient != None:
+                os.system('cls')
                 print(f"BIENVENIDO : {foundClient.name} {foundClient.surname}")
                 #chequeo de la seleccion
 
                 while True:#entra en la seleccion
                     while True:#verifica la entrada del usuario
                         print("Seleccione una opcion:")
-                        print("1. Retiro de Efectivo por Cajero Automático")
-                        print("2. Retiro de Efectivo por Caja")
-                        print("3. Compra en Cuotas con Tarjeta de Crédito")
-                        print("4. Alta Tarjeta de Crédito")
-                        print("5. Alta Tarjeta de Débito")
-                        print("6. Alta Chequera")
-                        print("7. Alta Cuenta Corriente")
-                        print("8. Alta Caja de Ahorro")
-                        print("9. Alta Cuenta de Inversión")
-                        print("10. Compra Dólares")
-                        print("11. Venta Dólares")
-                        print("12. Transferencia Enviada")
-                        print("13. Transferencia Recibida")
-                        print("0. Volver")
+                        print("1. Retiro de Efectivo por Cajero Automático  2. Retiro de Efectivo por Caja")
+                        print("3. Compra en Cuotas con Tarjeta de Crédito   4. Alta Tarjeta de Crédito")
+                        print("5. Alta Tarjeta de Débito                    6. Alta Chequera")
+                        print("7. Alta Cuenta Corriente                     8. Alta Caja de Ahorro")
+                        print("9. Alta Cuenta de Inversión                  10. Compra Dólares")
+                        print("11. Venta Dólares                            12. Transferencias")
+                        print("13. Ingresar dinero                          14. Visualizar balance")
+                        print("0. volver")
                         opcion = input()
                         try:
                             opcion = int(opcion)
@@ -132,46 +150,60 @@ while True:
                             print("Error, coloque solo numeros en la seleccion!!")
                             input("Presione ENTER para continuar...")
 
-                    if opcion == "1":
-                        #realizar_retiro_efectivo(cliente)
-                        pass
-                    elif opcion == "2":
+                    if opcion == opcion2:
+                        #retiro efectivo por cajero automatico
+                        os.system('cls')
+                        tipoCuentaOp = validacionTexto2("Seleccione la caja de ahorro:\n1.Caja ahorro en pesos\n2.Caja ahorro en dolares\nSu entrada: ")
+                        monto = validacionNumero("Ingrese el monto a retirar: ")
+                        if tipoCuentaOp == opcion2:
+                            tipoCuenta = "Caja de ahorro en pesos"
+                        elif tipoCuentaOp == opcion3:
+                            tipoCuenta = "Caja de ahorro en dólares"
+                        foundClient.realizarRetiroEfectivo(tipoCuenta,monto)
+                        input("Presione ENTER para continuar...")
+
+                    elif opcion == opcion3:
                         # Lógica para el retiro de efectivo por caja
                         pass
-                    elif opcion == "3":
+                    elif opcion == opcion4:
                     # Lógica para la compra en cuotas con tarjeta de crédito
                         pass
-                    elif opcion == "4":
+                    elif opcion == opcion5:
                     # Lógica para el alta de tarjeta de crédito
                         pass
-                    elif opcion == "5":
+                    elif opcion == opcion6:
                         # Lógica para el alta de tarjeta de débito
                         pass
-                    elif opcion == "6":
+                    elif opcion == opcion7:
                     # Lógica para el alta de chequera
                         pass
-                    elif opcion == "7":
+                    elif opcion == opcion8:
                         # Lógica para el alta de cuenta corriente
                         pass
-                    elif opcion == "8":
+                    elif opcion == opcion9:
                     # Lógica para el alta de caja de ahorro
                         pass
-                    elif opcion == "9":
+                    elif opcion == opcion10:
                     # Lógica para el alta de cuenta de inversión
                         pass
-                    elif opcion == "10":
+                    elif opcion == opcion11:
                     # Lógica para la compra de dólares
                         pass
-                    elif opcion == "11":
+                    elif opcion == opcion12:
                         # Lógica para la venta de dólares
                         pass
-                    elif opcion == "12":
-                        # Lógica para la transferencia enviada
+                    elif opcion == opcion13:
+                        # Lógica para las tranferencias
                         pass
-                    elif opcion == "13":
-                        # Lógica para la transferencia recibida
-                        pass
-                    elif opcion == "0":
+                    elif opcion == opcion14:
+                        # Ingreso de dinero (muestra)
+                        monto = validacionNumero("Ingrese la cantidad de dinero a agregar: ")
+                        foundClient.realizarTransferenciaEntrante(monto)
+                        input("Presione ENTER para continuar...")
+                    elif opcion == opcion15:
+                        print("Saldo de la caja de ahorro en pesos:",str(foundClient.obtenerSaldoCajaPesos()))
+
+                    elif opcion == opcion1:
                         print("Loggin off...")
                         break
                     else:
@@ -179,10 +211,10 @@ while True:
             else:
                 print("Cliente no encontrado.")
                 input("Presione ENTER para continuar...")
-        elif selection == 2:
+        elif selection == opcion3:
             elemento = crearCliente()
             lista_clientes.append(elemento)
-        elif selection == 3:
+        elif selection == opcion4:
             print("Gracias por usar nuestro programa!!")
             break
         else: 
