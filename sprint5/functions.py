@@ -91,7 +91,76 @@ def menuUsarCliente():
     statePointer1 = buscarDniCliente(dni)
     stateIndex = 0
     if statePointer1[stateIndex]==True:
-        reconstruirCliente(dni)
+        foundClient = reconstruirCliente(dni)
+        while True:
+            print(f"BIENVENIDO\A : {foundClient.name} {foundClient.surname}")
+            #no magic numbers
+            opcion1 = 1
+            opcion2 = 2
+            opcion3 = 3
+            opcion4 = 4
+            opcion5 = 5
+            opcion6 = 6
+            opcion7 = 7
+            opcion8 = 8
+            opcion9 = 9
+            opcion10 = 10
+            opcion11 = 11
+            if foundClient.getTypeClient() == "Classic":
+                while True:
+                    print("Servicios:")
+                    print("1. Retiro de Efectivo por Cajero Automático  2. Alta Tarjeta de Débito")
+                    print("3. Alta Caja de Ahorro Pesos                 4. Alta Caja de Ahorro Dolar")
+                    print("5. Compra Dólares                            6. Venta Dólares ")
+                    print("7. Transferencias                            8. Ingresar dinero ")
+                    print("9. Visualizar balances                       10. Resumen de cuenta")
+                    print("11. Login off")
+                    seleccion = validacionSeleccion("seleccione una opcion",11)
+                    break
+                if seleccion==opcion1:
+                    os.system("cls")
+                    print("RETIRO POR CAJERO AUTOMATICO:")
+                    input("Pulse ENTER para continuar...")
+                elif seleccion==opcion2:
+                    os.system("cls")
+                    print("SISTEMA DE ALTA DE TARJETA DE DEBITO:")
+                    input("Pulse ENTER para continuar...")
+                elif seleccion==opcion3:
+                    os.system("cls")
+                    print("SISTEMA DE ALTA DE CAJA DE AHORRO EN PESOS:")
+                    input("Pulse ENTER para continuar...")
+                elif seleccion==opcion4:
+                    os.system("cls")
+                    print("SISTEMA DE ALTA DE CAJA DE AHORRO EN DOLARES:")
+                    input("Pulse ENTER para continuar...")
+                elif seleccion==opcion5:
+                    os.system("cls")
+                    print("COMPRA DE DOLARES:")
+                    input("Pulse ENTER para continuar...")
+                elif seleccion==opcion6:
+                    os.system("cls")
+                    print("VENTA DE DOLARES:")
+                    input("Pulse ENTER para continuar...")
+                elif seleccion==opcion7:
+                    os.system("cls")
+                    print("HISTORIAL DE TRANSFERENCIAS:")
+                    input("Pulse ENTER para continuar...")
+                elif seleccion==opcion8:
+                    pass
+                elif seleccion==opcion9:
+                    os.system("cls")
+                    print("BALANCES DE LA CUENTA:")
+                    input("Pulse ENTER para continuar...")
+                elif seleccion==opcion10:
+                    os.system("cls")
+                    print("RESUMEN DE CUENTA:")
+                    input("Pulse ENTER para continuar...")
+                elif seleccion==opcion11:
+                    print("Cerrando Sesion...")
+                    input("Pulse ENTER para continuar...")
+                    os.system("cls")
+                    break
+
     else:
         print("No existen cuentas con ese DNI...")
         input("Presione ENTER para continuar...")
@@ -103,11 +172,6 @@ def menu():
     opcion1 = "1"
     opcion2 = "2"
     opcion3 = "3"
-    opcion4 = "4"
-    opcion5 = "5"
-    opcion6 = "6"
-    opcion7 = "7"
-    opcion8 = "8"
 
     while True:
         os.system("cls")

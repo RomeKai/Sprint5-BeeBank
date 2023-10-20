@@ -58,9 +58,7 @@ def reconstruirCliente(fdni):
             clienteV = ClienteGold(clientName,clientSurname,clientDni,clientTransfers,clientNumber,clientTCredito,clientTDebito,clientCAhorroPesos,clientCAhorroDolares,clientCuentaCorriente,clientCantTCredito,clientCantTDebito,clientCantCAhorro,clientCantCCorriente,clientCantCInversion,clientCantChequera,clientCantLimiteDiario,"recreating")
         elif clientType == "Black":
             clienteV = ClienteBlack(clientName,clientSurname,clientDni,clientTransfers,clientNumber,clientTCredito,clientTDebito,clientCAhorroPesos,clientCAhorroDolares,clientCuentaCorriente,clientCantTCredito,clientCantTDebito,clientCantCAhorro,clientCantCCorriente,clientCantCInversion,clientCantChequera,clientCantLimiteDiario,"recreating")
-        print(clienteV)
-        input()
-        os.system("cls")
+        return clienteV
     else:
         print("Cliente no encontrado...")
         input("Presione ENTER para continuar...")
