@@ -11,6 +11,7 @@ class Client:
             self.tipo = typeclient
             self.transacciones = [] #historial transacciones
             self.tarjetasDebito = [] #tarjetas de debito adquiridas
+            self.tarjetasCredito = []   #tarjetas de credito adquiridas
             self.cajasAhorroPesos = [] #cajas de ahorro en pesos adquiridas
             self.cuentaCorriente = [] #cuentas corrientes adquiridas
             self.cajasAhorroDolares = [] #cajas de ahorro en dolares adquiridas
@@ -140,6 +141,9 @@ class Client:
     #obtener tarjetas edel cliente
     def obtenertarjetasDebito(self):
         return [tarjeta.numeroTarjeta for tarjeta in self.tarjetasDebito]
+    #obteber tarjertas de credito
+    def obtenertarjetasCredito(self):
+        return [tarjeta.numeroTarjeta for tarjeta in self.tarjetasCredito]
 
     #obtener cuentas disponibles
     def obtenerCuentasDisponibles(self):

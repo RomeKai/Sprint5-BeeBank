@@ -190,3 +190,24 @@ def menu():
             print("ERROR")
     input("Presione ENTER para finalizar...")
     os.system("cls")
+
+
+def calcularMontoTotal(precioDolar, cantidadDolares):
+    impuestoPais = 0.3  # 30% de impuesto país
+    ganancias = 0.35  # 35% de impuesto a las ganancias
+    
+    montoTotal = cantidadDolares * precioDolar
+    impuestoTotal = montoTotal * impuestoPais
+    gananciasTotal = montoTotal * ganancias
+    
+    montoTotalConImpuestos = montoTotal + impuestoTotal + gananciasTotal
+    return montoTotalConImpuestos
+
+def descontarComision(monto, porcentajeComision):
+    comision = (porcentajeComision / 100) * monto
+    montoDescontado = monto - comision
+    return montoDescontado
+
+def calcularMontoPlazoFijo(monto, interes):
+    montoFinal = monto * (1 + interes)
+    return montoFinal

@@ -76,25 +76,6 @@ def buscar_cliente(dniExistente, lista_clientes):
 
 #estas 3 son obligatorias por el enunciado
 
-def calcularMontoTotal(precioDolar, cantidadDolares):
-    impuestoPais = 0.3  # 30% de impuesto país
-    ganancias = 0.35  # 35% de impuesto a las ganancias
-    
-    montoTotal = cantidadDolares * precioDolar
-    impuestoTotal = montoTotal * impuestoPais
-    gananciasTotal = montoTotal * ganancias
-    
-    montoTotalConImpuestos = montoTotal + impuestoTotal + gananciasTotal
-    return montoTotalConImpuestos
-
-def descontarComision(monto, porcentajeComision):
-    comision = (porcentajeComision / 100) * monto
-    montoDescontado = monto - comision
-    return montoDescontado
-
-def calcularMontoPlazoFijo(monto, interes):
-    montoFinal = monto * (1 + interes)
-    return montoFinal
 
 #**********************************************************
 #main principal, falta la salida en formato CVG y tambien las opciones de las funciones de calcularMontoTotal,descontarComision,calcularMontoPlazoFijo
@@ -115,7 +96,7 @@ opcion11 = "10"
 opcion12 = "11"
 opcion13 = "12"
 opcion14 = "13"
-opcion15 = "14"
+
 while True:
     if __name__ == "__main__":
         print("\n --Bienvenido al sistema bancario BeeBank-- \n")
@@ -131,13 +112,13 @@ while True:
                 while True:#entra en la seleccion
                     while True:#verifica la entrada del usuario
                         print("Seleccione una opcion:")
-                        print("1. Retiro de Efectivo por Cajero Automático  2. Retiro de Efectivo por Caja")
-                        print("3. Compra en Cuotas con Tarjeta de Crédito   4. Alta Tarjeta de Crédito")
-                        print("5. Alta Tarjeta de Débito                    6. Alta Chequera")
-                        print("7. Alta Cuenta Corriente                     8. Alta Caja de Ahorro")
-                        print("9. Alta Cuenta de Inversión                  10. Compra Dólares")
-                        print("11. Venta Dólares                            12. Transferencias")
-                        print("13. Ingresar dinero                          14. Visualizar balance")
+                        print("1. Retiro de Efectivo por Cajero Automático")
+                        print("2. Compra en Cuotas con Tarjeta de Crédito   3. Alta Tarjeta de Crédito")
+                        print("4. Alta Tarjeta de Débito                    5. Alta Chequera")
+                        print("6. Alta Cuenta Corriente                     7. Alta Caja de Ahorro")
+                        print("8. Alta Cuenta de Inversión                  9. Compra Dólares")
+                        print("10. Venta Dólares                            11. Transferencias")
+                        print("12. Ingresar dinero                          13. Visualizar balance")
                         print("0. volver")
                         opcion = input()
                         try:
@@ -162,15 +143,66 @@ while True:
                         foundClient.realizarRetiroEfectivo(tipoCuenta,monto)
                         input("Presione ENTER para continuar...")
 
+
                     elif opcion == opcion3:
-                        # Lógica para el retiro de efectivo por caja
-                        pass
-                    elif opcion == opcion4:
+
+
+                         print("Tarjetas de Crédito Disponibles:")
+                         tarjetasDisponibles =  foundClient.obtenertarjetasCredito()  # Obtener las tarjetas de crédito disponibles del cliente
+                         for elem, tarjeta in enumerate(tarjetasDisponibles, start=1):
+                             print(f"{index}. {tarjeta}")
+
+                         try:
+                             opcion = int(input("Seleccione la tarjeta de crédito para la compra en cuotas: "))
+                             if 1 <= opcion <= len(tarjetasDisponibles):
+                                 tarjetaSeleccionada = tarjetasDisponibles[opcion - 1]
+                                 monto = float(input("Ingrese el monto de la compra: "))
+                                 cuotas = validacionNumero("Ingrese la cantidad de cuotas: ")
+                                 if monto <= tarjetaSeleccionada.obtenerLimiteCuota():
+                                     foundClient.realizarCompraCuotas(tarjetaSeleccionada, monto, cuotas)
+                                     print("Exito.")
+                               
+                             else:
+                                 print("Opción inválida.")
+                         except ValueError:
+                             print("Por favor, ingrese un número válido.")                                               
+                             pass
+
+
                     # Lógica para la compra en cuotas con tarjeta de crédito
-                        pass
+                    elif opcion == opcion4:
+                                try:                             
+                                    numero_tarjeta = input("Ingrese el número de la tarjeta de crédito: ")
+                                    limite_total = float(input("Ingrese el límite total de la tarjeta de crédito: "))
+                                    limite_cuota = float(input("Ingrese el límite por cuota de la tarjeta de crédito: "))
+                                    tipo = "Credito"
+
+                                    nuevaTarjetaCredito = TarjetaCredito(numero_tarjeta, limiteTotal, limiteCuota, tipo)
+                                    cliente.agregarTarjetaCredito(nuevaTarjetaCredito)
+                                    print("Tarjeta de crédito agregada con éxito.")
+                                   
+                                except  ValueError:
+                                    print("Por favor, ingrese un valor válido.")
+                                pass
                     elif opcion == opcion5:
-                    # Lógica para el alta de tarjeta de crédito
-                        pass
+
+                                 try:                             
+                                        numero_tarjeta = input("Ingrese el número de la tarjeta de Debito: ")
+                                        limite_total = float(input("Ingrese el límite total de la tarjeta de Debito: "))
+                                        limite_cuota = float(input("Ingrese el límite por cuota de la tarjeta de Debito: "))
+                                        tipo = "Debito"
+
+                                        # Crea una nueva tarjeta de crédito con los datos proporcionados
+                                        nuevaTarjetaDebito = TarjetaDebito(numero_tarjeta, limiteTotal, limiteCuota, tipo)
+
+                                        # Agrega la tarjeta de crédito al cliente
+                                        cliente.agregarTarjetaDebito(nuevaTarjetaDebito)
+                                        print("Tarjeta de Debito agregada con éxito.")
+                                 except ValueError:
+                                    print("Por favor, ingrese un valor válido.")
+                                 pass           
+
+
                     elif opcion == opcion6:
                         # Lógica para el alta de tarjeta de débito
                         pass
